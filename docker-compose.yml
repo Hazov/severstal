@@ -1,0 +1,28 @@
+
+networks:
+  nw:
+    driver: bridge
+
+services:
+  books:
+    build:
+      context: .
+      dockerfile: DockerFile
+    environment:
+      - spring.datasource.url=jdbc:postgresql://db:5432/book_demo_db
+      - spring.datasource.username=postgres
+      - spring.datasource.password=1029384756
+    ports:
+      - 8080:8080
+    networks:
+      - nw
+  db:
+    image: 'bitnami/postgresql:17.4.0'
+    environment:
+      - POSTGRESQL_PASSWORD=1029384756
+    networks:
+      - nw
+    volumes:
+      - /private/var/lib/postgresql:/var/lib/postgresql
+    ports:
+      - 5433:5432

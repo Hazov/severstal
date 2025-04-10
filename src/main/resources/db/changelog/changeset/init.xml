@@ -1,0 +1,75 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <changeSet author="nikolay (generated)" id="1744288435407-1">
+        <createTable tableName="book">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="book_pkey"/>
+            </column>
+            <column name="author" type="VARCHAR(255)"/>
+            <column name="title" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="nikolay (generated)" id="1744288435407-2">
+        <createTable tableName="person">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="person_pkey"/>
+            </column>
+            <column name="email" type="VARCHAR(255)"/>
+            <column name="first_name" type="VARCHAR(255)"/>
+            <column name="last_name" type="VARCHAR(255)"/>
+            <column name="password" type="VARCHAR(255)"/>
+            <column name="role" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="nikolay (generated)" id="1744288435407-3">
+        <createTable tableName="person_books">
+            <column name="person_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="books_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="nikolay (generated)" id="1744288435407-4">
+        <addForeignKeyConstraint baseColumnNames="person_id" baseTableName="person_books" constraintName="fk70cxtmpm1bbdojskv7y760axv" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="person" validate="true"/>
+    </changeSet>
+    <changeSet author="nikolay (generated)" id="1744288435407-5">
+        <addForeignKeyConstraint baseColumnNames="books_id" baseTableName="person_books" constraintName="fko3krnx5da9y6i7cp7f2w8cl3r" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="book" validate="true"/>
+    </changeSet>
+    <changeSet author="nikolay" id="1744288435407-6">
+        <insert tableName="book">
+            <column name="author">Автор1</column>
+            <column name="title">Книга1</column>
+        </insert>
+        <insert tableName="book">
+            <column name="author">Автор1</column>
+            <column name="title">Книга2</column>
+        </insert>
+        <insert tableName="book">
+            <column name="author">Автор2</column>
+            <column name="title">Книга1</column>
+        </insert>
+        <insert tableName="book">
+            <column name="author">Автор2</column>
+            <column name="title">Книга2</column>
+        </insert>
+    </changeSet>
+
+    <changeSet author="nikolay" id="1744288435407-7">
+        <insert tableName="person">
+            <column name="first_name">Админ</column>
+            <column name="last_name">Админов</column>
+            <column name="password">$2a$12$Cy4Jk/6oZ0fSMFdncgJ8IOBuEhxIfO0whEww6L3PO5FZ8.rLTjd2a</column>
+            <column name="email">admin@mail.ru</column>
+            <column name="role">"ROLE_ADMIN"</column>
+        </insert>
+        <insert tableName="person">
+            <column name="first_name">Юзер</column>
+            <column name="last_name">Юзеров</column>
+            <column name="password">$2a$12$Cy4Jk/6oZ0fSMFdncgJ8IOBuEhxIfO0whEww6L3PO5FZ8.rLTjd2a</column>
+            <column name="email">user@mail.ru</column>
+            <column name="role">ROLE_USER</column>
+        </insert>
+    </changeSet>
+</databaseChangeLog>

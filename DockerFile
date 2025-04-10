@@ -1,0 +1,6 @@
+FROM christianvidalch/java21-maven3:v1.0
+WORKDIR /app
+COPY . /app
+EXPOSE 8080
+ENTRYPOINT ["mvn","spring-boot:run"]
+
