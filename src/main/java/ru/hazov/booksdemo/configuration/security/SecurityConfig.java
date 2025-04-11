@@ -1,39 +1,63 @@
 package ru.hazov.booksdemo.configuration.security;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.AbstractAuthenticationFilterConfigurer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import ru.hazov.booksdemo.service.PersonDetailsService;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import ru.hazov.booksdemo.repository.PersonRepository;
+import ru.hazov.booksdemo.service.auth.JwtAuthFilter;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
 
-    @Bean
-    public UserDetailsService userDetailsService() {
-        return new PersonDetailsService();
+    private final PersonRepository personRepository;
+    private final JwtAuthFilter jwtAuthFilter;
+
+    @Autowired
+    public SecurityConfig(PersonRepository personRepository,
+                          JwtAuthFilter jwtAuthFilter
+    ) {
+        this.personRepository = personRepository;
+        this.jwtAuthFilter = jwtAuthFilter;
     }
 
     @Bean
-    public AuthenticationProvider authenticationProvider() {
-        DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
-        daoAuthenticationProvider.setUserDetailsService(userDetailsService());
-        daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
-        return daoAuthenticationProvider;
+    UserDetailsService userDetailsService() {
+        return username -> personRepository.findByEmail(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder() {
+    BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder(12);
+    }
+
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
+        return config.getAuthenticationManager();
+    }
+
+    @Bean
+    AuthenticationProvider authenticationProvider() {
+        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+
+        authProvider.setUserDetailsService(userDetailsService());
+        authProvider.setPasswordEncoder(passwordEncoder());
+
+        return authProvider;
     }
 
     @Bean
@@ -43,10 +67,11 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("api/v1/books/**").authenticated()
                         .requestMatchers("api/v1/books/all", "api/v1/books/search").permitAll()
+                        .requestMatchers("api/v1/auth/**").permitAll()
                 )
-                .formLogin(AbstractAuthenticationFilterConfigurer::permitAll)
+                .authenticationProvider(authenticationProvider())
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
-
 
 }

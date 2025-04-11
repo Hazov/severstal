@@ -1,6 +1,9 @@
-package ru.hazov.booksdemo.dto.return_rental_book;
+package ru.hazov.booksdemo.dto.books.rent_book;
 
-public class ReturnRentalBookRequest {
+import jakarta.validation.constraints.Positive;
+
+public class RentBookRequest {
+    @Positive
     private Long bookId;
 
     public Long getBookId() {

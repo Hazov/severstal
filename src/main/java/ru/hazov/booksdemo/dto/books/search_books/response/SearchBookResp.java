@@ -1,4 +1,4 @@
-package ru.hazov.booksdemo.dto.search_books.response;
+package ru.hazov.booksdemo.dto.books.search_books.response;
 
 import ru.hazov.booksdemo.entity.Book;
 

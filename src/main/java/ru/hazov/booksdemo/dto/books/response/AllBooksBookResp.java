@@ -1,22 +1,19 @@
-package ru.hazov.booksdemo.dto.create_book;
+package ru.hazov.booksdemo.dto.books.response;
 
 import ru.hazov.booksdemo.entity.Book;
 
-public class CreateBookResponse {
-    private  Long id;
-
+public class AllBooksBookResp {
+    private Long id;
     private String title;
-
     private String author;
 
-    public static CreateBookResponse fromBook(Book newBook) {
-        CreateBookResponse response = new CreateBookResponse();
-        response.setId(newBook.getId());
-        response.setTitle(newBook.getTitle());
-        response.setAuthor(newBook.getAuthor());
-        return response;
+    public static AllBooksBookResp fromBook(Book book) {
+        AllBooksBookResp resp = new AllBooksBookResp();
+        resp.setId(book.getId());
+        resp.setTitle(book.getTitle());
+        resp.setAuthor(book.getAuthor());
+        return resp;
     }
-
 
     public Long getId() {
         return id;

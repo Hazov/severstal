@@ -1,4 +1,4 @@
-package ru.hazov.booksdemo.dto.all_book.response;
+package ru.hazov.booksdemo.dto.books.response;
 
 import java.util.List;
 

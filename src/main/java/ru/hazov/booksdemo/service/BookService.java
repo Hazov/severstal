@@ -2,11 +2,11 @@ package ru.hazov.booksdemo.service;
 
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
-import ru.hazov.booksdemo.dto.create_book.CreateBookRequest;
-import ru.hazov.booksdemo.dto.search_books.request.BookFilterRequest;
+import ru.hazov.booksdemo.dto.books.create_book.CreateBookRequest;
+import ru.hazov.booksdemo.dto.books.search_books.request.BookFilterRequest;
 import ru.hazov.booksdemo.entity.Book;
 import ru.hazov.booksdemo.entity.Person;
-import ru.hazov.booksdemo.exception.entity.BookNotFoundException;
+import ru.hazov.booksdemo.exception.entity_exceptions.BookNotFoundException;
 import ru.hazov.booksdemo.repository.BookRepository;
 import ru.hazov.booksdemo.repository.PersonRepository;
 
@@ -29,7 +29,9 @@ public class BookService {
 
     public List<Book> searchBooks(BookFilterRequest request) {
         List<Book> all = bookRepository.findAll();
-        return all.stream().filter(book -> book.getTitle().equals(request.getTitle())).toList();
+        return all.stream()
+                .filter(book -> book.getTitle().equals(request.getTitle()))
+                .toList();
     }
 
     public Book createNewBook(CreateBookRequest request) {

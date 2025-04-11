@@ -4,6 +4,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotEmpty;
+import org.hibernate.validator.constraints.Length;
 
 @Entity
 public class Book {
@@ -11,7 +13,12 @@ public class Book {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotEmpty
+    @Length(max = 150)
     private String title;
+
+    @NotEmpty
+    @Length(max = 150)
     private String author;
 
     public Long getId() {

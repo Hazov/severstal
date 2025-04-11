@@ -1,4 +1,4 @@
-package ru.hazov.booksdemo.exception.entity;
+package ru.hazov.booksdemo.exception.entity_exceptions;
 
 
 import ru.hazov.booksdemo.exception.ControllerException;

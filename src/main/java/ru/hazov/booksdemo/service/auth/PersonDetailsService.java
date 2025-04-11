@@ -1,4 +1,4 @@
-package ru.hazov.booksdemo.service;
+package ru.hazov.booksdemo.service.auth;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;

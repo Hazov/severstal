@@ -1,18 +1,20 @@
 package ru.hazov.booksdemo.controller;
 
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import ru.hazov.booksdemo.dto.all_book.response.AllBookResponse;
-import ru.hazov.booksdemo.dto.all_book.response.AllBooksBookResp;
-import ru.hazov.booksdemo.dto.create_book.CreateBookRequest;
-import ru.hazov.booksdemo.dto.create_book.CreateBookResponse;
-import ru.hazov.booksdemo.dto.rent_book.RentBookRequest;
-import ru.hazov.booksdemo.dto.rent_book.RentBookResponse;
-import ru.hazov.booksdemo.dto.return_rental_book.ReturnRentalBookRequest;
-import ru.hazov.booksdemo.dto.search_books.request.BookFilterRequest;
-import ru.hazov.booksdemo.dto.search_books.response.SearchBookResp;
-import ru.hazov.booksdemo.dto.search_books.response.SearchBooksResponse;
+import ru.hazov.booksdemo.dto.books.response.AllBookResponse;
+import ru.hazov.booksdemo.dto.books.response.AllBooksBookResp;
+import ru.hazov.booksdemo.dto.books.create_book.CreateBookRequest;
+import ru.hazov.booksdemo.dto.books.create_book.CreateBookResponse;
+import ru.hazov.booksdemo.dto.books.rent_book.RentBookRequest;
+import ru.hazov.booksdemo.dto.books.rent_book.RentBookResponse;
+import ru.hazov.booksdemo.dto.books.return_rental_book.ReturnRentalBookRequest;
+import ru.hazov.booksdemo.dto.books.search_books.request.BookFilterRequest;
+import ru.hazov.booksdemo.dto.books.search_books.response.SearchBookResp;
+import ru.hazov.booksdemo.dto.books.search_books.response.SearchBooksResponse;
 import ru.hazov.booksdemo.entity.Book;
 import ru.hazov.booksdemo.entity.Person;
 import ru.hazov.booksdemo.service.BookService;
@@ -46,7 +48,7 @@ public class BookController {
 
     @PostMapping("/create")
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    public ResponseEntity<?> createNewBook(CreateBookRequest request) {
+    public ResponseEntity<?> createNewBook(@Validated @RequestBody CreateBookRequest request) {
         Book newBook = bookService.createNewBook(request);
         CreateBookResponse response = CreateBookResponse.fromBook(newBook);
         return ResponseEntity.ok(response);
@@ -55,7 +57,7 @@ public class BookController {
 
     @PutMapping("/rent")
     @PreAuthorize("hasAuthority('ROLE_USER')")
-    public ResponseEntity<?> rentBook(Principal currentUser, RentBookRequest request) {
+    public ResponseEntity<?> rentBook(Principal currentUser, @Validated @RequestBody RentBookRequest request) {
         Book book = bookService.rentBookById((Person) currentUser, request.getBookId());
         RentBookResponse response = new RentBookResponse();
         response.setBookId(request.getBookId());
@@ -64,16 +66,16 @@ public class BookController {
 
     @PutMapping("/return_rental")
     @PreAuthorize("hasAuthority('ROLE_USER')")
-    public ResponseEntity<?> returnRentalBook(Principal currentUser, ReturnRentalBookRequest request) {
+    public ResponseEntity<?> returnRentalBook(Principal currentUser, @Validated @RequestBody ReturnRentalBookRequest request) {
         Book book = bookService.returnRentalBookById((Person) currentUser, request.getBookId());
         RentBookResponse response = new RentBookResponse();
         response.setBookId(request.getBookId());
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/search")
-    public ResponseEntity<?> searchBooks(BookFilterRequest request) {
-        List<Book> allBooks = bookService.searchBooks(request);
+    @GetMapping("/search/{filter}")
+    public ResponseEntity<?> searchBooks(@Validated @PathVariable BookFilterRequest filter) {
+        List<Book> allBooks = bookService.searchBooks(filter);
         SearchBooksResponse response = new SearchBooksResponse();
         response.setBooks(allBooks.stream().map(SearchBookResp::fromBook).toList());
         return ResponseEntity.ok(response);

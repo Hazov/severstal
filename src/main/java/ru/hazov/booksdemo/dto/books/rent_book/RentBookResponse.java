@@ -1,4 +1,4 @@
-package ru.hazov.booksdemo.dto.rent_book;
+package ru.hazov.booksdemo.dto.books.rent_book;
 
 public class RentBookResponse {
     private Long bookId;
