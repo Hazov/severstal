@@ -39,6 +39,11 @@
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
             <groupId>org.liquibase</groupId>
             <artifactId>liquibase-core</artifactId>
         </dependency>
@@ -79,6 +84,11 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-validation</artifactId>
         </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
 
     </dependencies>
 
@@ -97,7 +107,7 @@
                     <url>jdbc:postgresql://localhost:5432/book_demo_db</url>
                     <username>postgres</username>
                     <password>1029384756</password>
-                    <outputChangeLogFile>src/main/resources/db/changelog/changeset/init.xml</outputChangeLogFile>
+                    <outputChangeLogFile>src/main/resources/db/changelog/changeset/init1.xml</outputChangeLogFile>
                 </configuration>
             </plugin>
         </plugins>

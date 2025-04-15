@@ -1,10 +1,8 @@
 package ru.hazov.booksdemo.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.Length;
 
 @Entity
@@ -14,10 +12,12 @@ public class Book {
     private Long id;
 
     @NotEmpty
+    @NotNull
     @Length(max = 150)
     private String title;
 
     @NotEmpty
+    @NotNull
     @Length(max = 150)
     private String author;
 
@@ -28,6 +28,7 @@ public class Book {
     public void setId(Long id) {
         this.id = id;
     }
+
 
     public String getTitle() {
         return title;

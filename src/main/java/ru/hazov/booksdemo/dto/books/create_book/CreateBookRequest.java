@@ -1,17 +1,20 @@
 package ru.hazov.booksdemo.dto.books.create_book;
 
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.Length;
 
 public class CreateBookRequest {
 
     @NotEmpty
+    @NotNull
     @Length(max = 150)
-    public String title;
+    private String title;
 
     @NotEmpty
+    @NotNull
     @Length(max = 150)
-    public String author;
+    private String author;
 
     public String getTitle() {
         return title;

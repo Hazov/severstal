@@ -4,7 +4,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Service;
 import ru.hazov.booksdemo.entity.Person;
-import ru.hazov.booksdemo.exception.entity_exceptions.PersonNotFoundException;
+import ru.hazov.booksdemo.exception.entity_exceptions.person.PersonNotFoundException;
 import ru.hazov.booksdemo.repository.PersonRepository;
 
 @Service

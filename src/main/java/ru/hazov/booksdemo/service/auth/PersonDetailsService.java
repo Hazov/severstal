@@ -6,7 +6,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import ru.hazov.booksdemo.entity.Person;
-import ru.hazov.booksdemo.entity.security.PersonDetails;
 import ru.hazov.booksdemo.repository.PersonRepository;
 
 import java.util.Optional;
@@ -21,9 +20,6 @@ public class PersonDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Optional<Person> user = personRepository.findByEmail(username);
-
-
-        return user.map(PersonDetails::new)
-                .orElseThrow(()->new UsernameNotFoundException(username+"There is not such person in REPO"));
+        return user.orElseThrow(()->new UsernameNotFoundException(username+"There is not such person in REPO"));
     }
 }

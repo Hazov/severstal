@@ -3,6 +3,7 @@ package ru.hazov.booksdemo.dto.books.search_books.request;
 import org.hibernate.validator.constraints.Length;
 
 public class BookFilterRequest {
+
     @Length(max = 150)
     private String title;
 

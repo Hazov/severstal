@@ -1,6 +1,26 @@
 <?xml version="1.1" encoding="UTF-8" standalone="no"?>
 <databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
-    <changeSet author="nikolay (generated)" id="1744288435407-1">
+    <changeSet author="nikolay (generated)" id="1744694902510-1">
+        <createTable tableName="author_own_books">
+            <column name="author_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="own_books_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="nikolay (generated)" id="1744694902510-2">
+        <addUniqueConstraint columnNames="own_books_id" constraintName="uko0b82bmt8ftfcff9fvokqiv6d" tableName="author_own_books"/>
+    </changeSet>
+    <changeSet author="nikolay (generated)" id="1744694902510-3">
+        <createTable tableName="author">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="author_pkey"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="nikolay (generated)" id="1744694902510-4">
         <createTable tableName="book">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="book_pkey"/>
@@ -9,7 +29,7 @@
             <column name="title" type="VARCHAR(255)"/>
         </createTable>
     </changeSet>
-    <changeSet author="nikolay (generated)" id="1744288435407-2">
+    <changeSet author="nikolay (generated)" id="1744694902510-5">
         <createTable tableName="person">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="person_pkey"/>
@@ -21,7 +41,7 @@
             <column name="role" type="VARCHAR(255)"/>
         </createTable>
     </changeSet>
-    <changeSet author="nikolay (generated)" id="1744288435407-3">
+    <changeSet author="nikolay (generated)" id="1744694902510-6">
         <createTable tableName="person_books">
             <column name="person_id" type="BIGINT">
                 <constraints nullable="false"/>
@@ -31,12 +51,23 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet author="nikolay (generated)" id="1744288435407-4">
+    <changeSet author="nikolay (generated)" id="1744694902510-7">
+        <addForeignKeyConstraint baseColumnNames="own_books_id" baseTableName="author_own_books" constraintName="fk1gtbw1x3ku5iqkj0s0cr7leyx" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="book" validate="true"/>
+    </changeSet>
+    <changeSet author="nikolay (generated)" id="1744694902510-8">
         <addForeignKeyConstraint baseColumnNames="person_id" baseTableName="person_books" constraintName="fk70cxtmpm1bbdojskv7y760axv" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="person" validate="true"/>
     </changeSet>
-    <changeSet author="nikolay (generated)" id="1744288435407-5">
+    <changeSet author="nikolay (generated)" id="1744694902510-9">
         <addForeignKeyConstraint baseColumnNames="books_id" baseTableName="person_books" constraintName="fko3krnx5da9y6i7cp7f2w8cl3r" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="book" validate="true"/>
     </changeSet>
+    <changeSet author="nikolay (generated)" id="1744694902510-10">
+        <addForeignKeyConstraint baseColumnNames="author_id" baseTableName="author_own_books" constraintName="fkql454a5bmcbvk0hi2w1pesoxu" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="author" validate="true"/>
+    </changeSet>
+    <changeSet author="nikolay (generated)" id="1744694902510-11">
+        <addForeignKeyConstraint baseColumnNames="id" baseTableName="author" constraintName="fksy85intp5fwneilcnnpjxy6bm" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="person" validate="true"/>
+    </changeSet>
+
+
     <changeSet author="nikolay" id="1744288435407-6">
         <insert tableName="book">
             <column name="author">Автор1</column>

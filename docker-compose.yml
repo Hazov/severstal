@@ -9,20 +9,21 @@ services:
       context: .
       dockerfile: DockerFile
     environment:
-      - spring.datasource.url=jdbc:postgresql://db:5432/book_demo_db
-      - spring.datasource.username=postgres
-      - spring.datasource.password=1029384756
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgredb:5432/postgres
+      - SPRING_DATASOURCE_PASSWORD=1029384756
     ports:
-      - 8080:8080
+      - "8080:8080"
+    depends_on:
+      - postgredb
     networks:
       - nw
-  db:
-    image: 'bitnami/postgresql:17.4.0'
+  postgredb:
+    image: 'bitnami/postgresql:17'
     environment:
+      - POSTGRESQL_DATABASE=postgres
+      - POSTGRESQL_USERNAME=postgres
       - POSTGRESQL_PASSWORD=1029384756
     networks:
       - nw
-    volumes:
-      - /private/var/lib/postgresql:/var/lib/postgresql
     ports:
-      - 5433:5432
+      - "5434:5432"

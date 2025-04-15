@@ -1,6 +1,5 @@
 package ru.hazov.booksdemo.controller;
 
-import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
@@ -12,6 +11,7 @@ import ru.hazov.booksdemo.dto.books.create_book.CreateBookResponse;
 import ru.hazov.booksdemo.dto.books.rent_book.RentBookRequest;
 import ru.hazov.booksdemo.dto.books.rent_book.RentBookResponse;
 import ru.hazov.booksdemo.dto.books.return_rental_book.ReturnRentalBookRequest;
+import ru.hazov.booksdemo.dto.books.return_rental_book.ReturnRentalBookResponse;
 import ru.hazov.booksdemo.dto.books.search_books.request.BookFilterRequest;
 import ru.hazov.booksdemo.dto.books.search_books.response.SearchBookResp;
 import ru.hazov.booksdemo.dto.books.search_books.response.SearchBooksResponse;
@@ -36,7 +36,7 @@ public class BookController {
 
     @GetMapping("/all")
     public ResponseEntity<?> getAllBooks() throws ExecutionException, InterruptedException {
-        CompletableFuture<List<Book>> allBook = bookService.getAllBook();
+        CompletableFuture<List<Book>> allBook = bookService.getAllBooks();
         List<Book> books = allBook.get();
         AllBookResponse response = new AllBookResponse();
         response.setBooks(books.stream()
@@ -60,7 +60,7 @@ public class BookController {
     public ResponseEntity<?> rentBook(Principal currentUser, @Validated @RequestBody RentBookRequest request) {
         Book book = bookService.rentBookById((Person) currentUser, request.getBookId());
         RentBookResponse response = new RentBookResponse();
-        response.setBookId(request.getBookId());
+        response.setBookId(book.getId());
         return ResponseEntity.ok(response);
     }
 
@@ -68,13 +68,13 @@ public class BookController {
     @PreAuthorize("hasAuthority('ROLE_USER')")
     public ResponseEntity<?> returnRentalBook(Principal currentUser, @Validated @RequestBody ReturnRentalBookRequest request) {
         Book book = bookService.returnRentalBookById((Person) currentUser, request.getBookId());
-        RentBookResponse response = new RentBookResponse();
+        ReturnRentalBookResponse response = new ReturnRentalBookResponse();
         response.setBookId(request.getBookId());
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/search/{filter}")
-    public ResponseEntity<?> searchBooks(@Validated @PathVariable BookFilterRequest filter) {
+    @GetMapping("/search")
+    public ResponseEntity<?> searchBooks(@Validated BookFilterRequest filter) {
         List<Book> allBooks = bookService.searchBooks(filter);
         SearchBooksResponse response = new SearchBooksResponse();
         response.setBooks(allBooks.stream().map(SearchBookResp::fromBook).toList());
